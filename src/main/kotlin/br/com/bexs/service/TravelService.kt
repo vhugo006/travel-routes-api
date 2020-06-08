@@ -1,13 +1,13 @@
 package br.com.bexs.service
 
-import br.com.bexs.domain.Connection
+import br.com.bexs.domain.Route
 import br.com.bexs.domain.TravelRoute
 import br.com.bexs.exception.NoTravelRouteFoundException
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
-class TravelService(private val connectionService: ConnectionService) {
+class TravelService(private val routeService: RouteService) {
 
     fun findBestTravelRoute(from: String, to: String): TravelRoute? {
 
@@ -19,31 +19,31 @@ class TravelService(private val connectionService: ConnectionService) {
     fun findAvailableTravelRoutes(
         from: String,
         to: String,
-        travelRouteConnections: MutableList<Connection> = mutableListOf(),
+        travelRouteRoutes: MutableList<Route> = mutableListOf(),
         travelRoutes: MutableList<TravelRoute> = mutableListOf()
     ): List<TravelRoute> {
 
-        val availableConnectionsByOrigin = connectionService.findConnectionsFrom(from)
+        val availableRoutesByOrigin = routeService.findRoutesFrom(from)
 
-        if (availableConnectionsByOrigin.isEmpty()) {
+        if (availableRoutesByOrigin.isEmpty()) {
             return travelRoutes
         }
 
-        availableConnectionsByOrigin.forEach connections@{ connection ->
+        availableRoutesByOrigin.forEach routes@{ route ->
 
-            if (travelRouteConnections.isNotEmpty() && travelRouteConnections.last().to != connection.from) {
-                travelRouteConnections.clear()
+            if (travelRouteRoutes.isNotEmpty() && travelRouteRoutes.last().to != route.from) {
+                travelRouteRoutes.clear()
             }
 
-            travelRouteConnections.add(connection)
-            if (connectionService.isEndConnection(connection, to)) {
-                val connectionsToAdd = mutableListOf<Connection>()
-                connectionsToAdd.addAll(travelRouteConnections)
-                travelRoutes.add(TravelRoute(connectionsToAdd))
+            travelRouteRoutes.add(route)
+            if (routeService.isEndRoute(route, to)) {
+                val routesToAdd = mutableListOf<Route>()
+                routesToAdd.addAll(travelRouteRoutes)
+                travelRoutes.add(TravelRoute(routesToAdd))
             }
 
-            if (connection.to == to) return@connections
-            findAvailableTravelRoutes(connection.to, to, travelRouteConnections, travelRoutes)
+            if (route.to == to) return@routes
+            findAvailableTravelRoutes(route.to, to, travelRouteRoutes, travelRoutes)
         }
         return travelRoutes
     }
@@ -62,7 +62,7 @@ class TravelService(private val connectionService: ConnectionService) {
 
         travelRoutes.forEach { travelRoute ->
             travelRoute.totalCost =
-                travelRoute.connections
+                travelRoute.routes
                     .map { it.cost }
                     .fold(BigDecimal.ZERO, BigDecimal::add)
         }

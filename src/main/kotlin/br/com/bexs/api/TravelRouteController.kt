@@ -21,7 +21,7 @@ class TravelRouteController(private val travelService: TravelService) {
     @ResponseBody
     @ApiOperation(
         value = "Return a travel route based on path param from/to.",
-        notes = "Return the best travel route in terms of cost regardless of connections number."
+        notes = "Return the best travel route in terms of cost regardless of routes number."
     )
     fun getCheapestTravelRoute(
         @PathVariable("from") from: String,

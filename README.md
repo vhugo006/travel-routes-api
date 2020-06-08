@@ -28,7 +28,7 @@ Uma vez que a aplicação foi inicializada, você deverá ver um log parecido co
 O serviço é um simples serviço REST para dar suporte à aplicação Kotlin standalone que retorna os dados formatados 
 de rotas de viagens mais baratas independente do número de conexões. O serviço utiliza um banco de dados em memória (H2) 
 para armazenar os dados. Se der tudo certo com as configurações do banco de dados, você poderá chamar dois endpoints 
-definidos em ```br.com.bexs.api.ConnectionController``` e ```br.com.bexs.api.TravelRouteController``` **porta 8090**.
+definidos em ```br.com.bexs.api.RouteController``` e ```br.com.bexs.api.TravelRouteController``` **porta 8090**.
 
  
 Abaixo temos algumas informações a respeito da aplicação: 
@@ -48,7 +48,7 @@ Abaixo estão os endpoints que você pode chamar:
 ### Criar uma conexão
 
 ```
-POST /travel-routes/v1/connections
+POST /travel-routes/v1/routes
 Accept: application/json
 Content-Type: application/json
 
@@ -59,20 +59,20 @@ Content-Type: application/json
 }
 
 RESPONSE: HTTP 201 (Created)
-Location header: http://localhost:8090/travel-routes/v1/connections/8
+Location header: http://localhost:8090/travel-routes/v1/routes/8
 ```
 
 ### Consultar a melhor rota de viagem
 
 ```
-GET /travel-routes/v1/routes/from/BEL/to/BSB
+GET /travel-routes/v1/routes/from/GRU/to/CDG
 Accept: application/json
 Content-Type: application/json
 
 RESPONSE: HTTP 200 (OK)
 
 {
-  "connections": [
+  "routes": [
     {
       "from": "GRU",
       "to": "SCL",
@@ -97,15 +97,15 @@ RESPONSE: HTTP 200 (OK)
 
 Execute a aplicação e acesse ```localhost:8090/swagger-ui.html```
 
-# Add connection curl examples
+# Add route curl examples
 ```   
-curl -X POST -i -d '{ "from": "GRU", "to": "BRC", "cost": 10}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/connections
-curl -X POST -i -d '{ "from": "BRC", "to": "SCL", "cost": 5}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/connections
-curl -X POST -i -d '{ "from": "GRU", "to": "CDG", "cost": 75}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/connections
-curl -X POST -i -d '{ "from": "GRU", "to": "SCL", "cost": 20}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/connections
-curl -X POST -i -d '{ "from": "GRU", "to": "ORL", "cost": 56}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/connections
-curl -X POST -i -d '{ "from": "ORL", "to": "CDG", "cost": 5}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/connections
-curl -X POST -i -d '{ "from": "SCL", "to": "ORL", "cost": 20}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/connections
+curl -X POST -i -d '{ "from": "GRU", "to": "BRC", "cost": 10}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/routes
+curl -X POST -i -d '{ "from": "BRC", "to": "SCL", "cost": 5}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/routes
+curl -X POST -i -d '{ "from": "GRU", "to": "CDG", "cost": 75}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/routes
+curl -X POST -i -d '{ "from": "GRU", "to": "SCL", "cost": 20}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/routes
+curl -X POST -i -d '{ "from": "GRU", "to": "ORL", "cost": 56}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/routes
+curl -X POST -i -d '{ "from": "ORL", "to": "CDG", "cost": 5}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/routes
+curl -X POST -i -d '{ "from": "SCL", "to": "ORL", "cost": 20}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/routes
 ```
 # Get best travel route curl example
 ```

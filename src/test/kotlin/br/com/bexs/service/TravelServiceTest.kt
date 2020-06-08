@@ -1,6 +1,6 @@
 package br.com.bexs.service
 
-import br.com.bexs.domain.Connection
+import br.com.bexs.domain.Route
 import br.com.bexs.exception.NoTravelRouteFoundException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
@@ -19,30 +19,30 @@ import kotlin.test.assertNotNull
 internal class TravelServiceTest {
 
     @Mock
-    private lateinit var connectionService: ConnectionService
+    private lateinit var routeService: RouteService
 
     @InjectMocks
     private lateinit var travelService: TravelService
 
     @Test
-    fun `when finding available travel route should return one with one connection`() {
+    fun `when finding available travel route should return one with one route`() {
 
         val from = "BEL"
         val to = "POA"
 
-        val connection = Connection(1105, "BEL", "POA", BigDecimal(168.98))
+        val route = Route(1105, "BEL", "POA", BigDecimal(168.98))
 
-        val connectionsFromBEL = mutableListOf(connection)
+        val routesFromBEL = mutableListOf(route)
 
-        `when`(connectionService.findConnectionsFrom("BEL")).thenReturn(connectionsFromBEL)
-        `when`(connectionService.isEndConnection(connection, to)).thenReturn(true)
+        `when`(routeService.findRoutesFrom("BEL")).thenReturn(routesFromBEL)
+        `when`(routeService.isEndRoute(route, to)).thenReturn(true)
 
         val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
 
         assertAll(
-            { assertEquals("BEL", travelRoutes.first().connections.first().from) },
-            { assertEquals("POA", travelRoutes.first().connections.first().to) },
-            { assertEquals(BigDecimal(168.98), travelRoutes.first().connections.first().cost) }
+            { assertEquals("BEL", travelRoutes.first().routes.first().from) },
+            { assertEquals("POA", travelRoutes.first().routes.first().to) },
+            { assertEquals(BigDecimal(168.98), travelRoutes.first().routes.first().cost) }
         )
     }
 
@@ -52,21 +52,21 @@ internal class TravelServiceTest {
         val from = "BEL"
         val to = "POA"
 
-        val connectionBELtoPOA = Connection(1105, "BEL", "POA", BigDecimal(168.98))
-        val connectionBSBtoPOA = Connection(1105, "BSB", "POA", BigDecimal(168.98))
+        val routeBELtoPOA = Route(1105, "BEL", "POA", BigDecimal(168.98))
+        val routeBSBtoPOA = Route(1105, "BSB", "POA", BigDecimal(168.98))
 
-        val connectionsFromBEL = mutableListOf(
-            Connection(1002, "BEL", "BSB", BigDecimal(100.00)),
-            connectionBELtoPOA
+        val routesFromBEL = mutableListOf(
+            Route(1002, "BEL", "BSB", BigDecimal(100.00)),
+            routeBELtoPOA
         )
 
-        val connectionsWithOriginInBSB = mutableListOf(connectionBSBtoPOA)
+        val routesWithOriginInBSB = mutableListOf(routeBSBtoPOA)
 
-        `when`(connectionService.findConnectionsFrom("BEL")).thenReturn(connectionsFromBEL)
-        `when`(connectionService.findConnectionsFrom("BSB")).thenReturn(connectionsWithOriginInBSB)
+        `when`(routeService.findRoutesFrom("BEL")).thenReturn(routesFromBEL)
+        `when`(routeService.findRoutesFrom("BSB")).thenReturn(routesWithOriginInBSB)
 
-        `when`(connectionService.isEndConnection(connectionBELtoPOA, to)).thenReturn(true)
-        `when`(connectionService.isEndConnection(connectionBSBtoPOA, to)).thenReturn(true)
+        `when`(routeService.isEndRoute(routeBELtoPOA, to)).thenReturn(true)
+        `when`(routeService.isEndRoute(routeBSBtoPOA, to)).thenReturn(true)
 
         val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
 
@@ -78,35 +78,35 @@ internal class TravelServiceTest {
         val from = "BEL"
         val to = "POA"
 
-        val connectionBELtoPOA = Connection(1105, "BEL", "POA", BigDecimal(750.00))
-        val connectionBSBtoPOA = Connection(1106, "BSB", "POA", BigDecimal(168.98))
+        val routeBELtoPOA = Route(1105, "BEL", "POA", BigDecimal(750.00))
+        val routeBSBtoPOA = Route(1106, "BSB", "POA", BigDecimal(168.98))
 
-        val connectionsFromBEL =
-            mutableListOf(Connection(1002, "BEL", "BSB", BigDecimal(100.00)), connectionBELtoPOA)
+        val routesFromBEL =
+            mutableListOf(Route(1002, "BEL", "BSB", BigDecimal(100.00)), routeBELtoPOA)
 
-        val connectionsWithOriginInBSB = mutableListOf(connectionBSBtoPOA)
+        val routesWithOriginInBSB = mutableListOf(routeBSBtoPOA)
 
-        `when`(connectionService.findConnectionsFrom("BEL")).thenReturn(connectionsFromBEL)
-        `when`(connectionService.findConnectionsFrom("BSB")).thenReturn(connectionsWithOriginInBSB)
+        `when`(routeService.findRoutesFrom("BEL")).thenReturn(routesFromBEL)
+        `when`(routeService.findRoutesFrom("BSB")).thenReturn(routesWithOriginInBSB)
 
-        `when`(connectionService.isEndConnection(connectionBELtoPOA, to)).thenReturn(true)
-        `when`(connectionService.isEndConnection(connectionBSBtoPOA, to)).thenReturn(true)
+        `when`(routeService.isEndRoute(routeBELtoPOA, to)).thenReturn(true)
+        `when`(routeService.isEndRoute(routeBSBtoPOA, to)).thenReturn(true)
 
         val bestTravelRoute = travelService.findBestTravelRoute(from, to)
 
         val travelCost =
             bestTravelRoute
-                ?.connections
+                ?.routes
                 ?.map { it.cost }
                 ?.fold(BigDecimal.ZERO, BigDecimal::add)
 
         assertAll(
             { assertNotNull(bestTravelRoute) },
-            { assertEquals(2, bestTravelRoute?.connections?.size) },
-            { assertEquals("BEL", bestTravelRoute?.connections?.first()?.from) },
-            { assertEquals("BSB", bestTravelRoute?.connections?.first()?.to) },
-            { assertEquals("BSB", bestTravelRoute?.connections?.get(1)?.from) },
-            { assertEquals("POA", bestTravelRoute?.connections?.get(1)?.to) },
+            { assertEquals(2, bestTravelRoute?.routes?.size) },
+            { assertEquals("BEL", bestTravelRoute?.routes?.first()?.from) },
+            { assertEquals("BSB", bestTravelRoute?.routes?.first()?.to) },
+            { assertEquals("BSB", bestTravelRoute?.routes?.get(1)?.from) },
+            { assertEquals("POA", bestTravelRoute?.routes?.get(1)?.to) },
             {
                 assertEquals(
                     BigDecimal(268.98).round(MathContext(5, RoundingMode.HALF_UP)),
@@ -126,19 +126,19 @@ internal class TravelServiceTest {
         val from = "bel"
         val to = "poa"
 
-        val connection = Connection(1105, "BEL", "POA", BigDecimal(168.98))
+        val route = Route(1105, "BEL", "POA", BigDecimal(168.98))
 
-        val connectionsFromBEL = mutableListOf(connection)
+        val routesFromBEL = mutableListOf(route)
 
-        `when`(connectionService.findConnectionsFrom("bel")).thenReturn(connectionsFromBEL)
-        `when`(connectionService.isEndConnection(connection, to)).thenReturn(true)
+        `when`(routeService.findRoutesFrom("bel")).thenReturn(routesFromBEL)
+        `when`(routeService.isEndRoute(route, to)).thenReturn(true)
 
         val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
 
         assertAll(
-            { assertEquals("BEL", travelRoutes.first().connections.first().from) },
-            { assertEquals("POA", travelRoutes.first().connections.first().to) },
-            { assertEquals(BigDecimal(168.98), travelRoutes.first().connections.first().cost) }
+            { assertEquals("BEL", travelRoutes.first().routes.first().from) },
+            { assertEquals("POA", travelRoutes.first().routes.first().to) },
+            { assertEquals(BigDecimal(168.98), travelRoutes.first().routes.first().cost) }
         )
     }
 
@@ -147,19 +147,19 @@ internal class TravelServiceTest {
         val from = "BEL"
         val to = "POA"
 
-        val connection = Connection(1105, "BEL", "POA", BigDecimal(168.98))
+        val route = Route(1105, "BEL", "POA", BigDecimal(168.98))
 
-        val connectionsFromBEL = mutableListOf(connection)
+        val routesFromBEL = mutableListOf(route)
 
-        `when`(connectionService.findConnectionsFrom("BEL")).thenReturn(connectionsFromBEL)
-        `when`(connectionService.isEndConnection(connection, to)).thenReturn(true)
+        `when`(routeService.findRoutesFrom("BEL")).thenReturn(routesFromBEL)
+        `when`(routeService.isEndRoute(route, to)).thenReturn(true)
 
         val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
 
         assertAll(
-            { assertEquals("BEL", travelRoutes.first().connections.first().from) },
-            { assertEquals("POA", travelRoutes.first().connections.first().to) },
-            { assertEquals(BigDecimal(168.98), travelRoutes.first().connections.first().cost) }
+            { assertEquals("BEL", travelRoutes.first().routes.first().from) },
+            { assertEquals("POA", travelRoutes.first().routes.first().to) },
+            { assertEquals(BigDecimal(168.98), travelRoutes.first().routes.first().cost) }
         )
     }
 
@@ -168,19 +168,19 @@ internal class TravelServiceTest {
         val from = "bEL"
         val to = "pOa"
 
-        val connection = Connection(1105, "BEL", "POA", BigDecimal(168.98))
+        val route = Route(1105, "BEL", "POA", BigDecimal(168.98))
 
-        val connectionsFromBEL = mutableListOf(connection)
+        val routesFromBEL = mutableListOf(route)
 
-        `when`(connectionService.findConnectionsFrom("bEL")).thenReturn(connectionsFromBEL)
-        `when`(connectionService.isEndConnection(connection, to)).thenReturn(true)
+        `when`(routeService.findRoutesFrom("bEL")).thenReturn(routesFromBEL)
+        `when`(routeService.isEndRoute(route, to)).thenReturn(true)
 
         val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
 
         assertAll(
-            { assertEquals("BEL", travelRoutes.first().connections.first().from) },
-            { assertEquals("POA", travelRoutes.first().connections.first().to) },
-            { assertEquals(BigDecimal(168.98), travelRoutes.first().connections.first().cost) }
+            { assertEquals("BEL", travelRoutes.first().routes.first().from) },
+            { assertEquals("POA", travelRoutes.first().routes.first().to) },
+            { assertEquals(BigDecimal(168.98), travelRoutes.first().routes.first().cost) }
         )
     }
 
@@ -189,26 +189,26 @@ internal class TravelServiceTest {
         val from = "BEL"
         val to = "GRU"
 
-        val connectionBELtoBSB = Connection(1002, "BEL", "BSB", BigDecimal(100.00))
-        val connectionsFromBEL = mutableListOf(connectionBELtoBSB)
+        val routeBELtoBSB = Route(1002, "BEL", "BSB", BigDecimal(100.00))
+        val routesFromBEL = mutableListOf(routeBELtoBSB)
 
-        `when`(connectionService.findConnectionsFrom("BEL")).thenReturn(connectionsFromBEL)
+        `when`(routeService.findRoutesFrom("BEL")).thenReturn(routesFromBEL)
 
-        `when`(connectionService.isEndConnection(connectionBELtoBSB, to)).thenReturn(false)
+        `when`(routeService.isEndRoute(routeBELtoBSB, to)).thenReturn(false)
 
         assertThrows<NoTravelRouteFoundException> { travelService.findBestTravelRoute(from, to) }
     }
 
     @Test
-    fun `when there is no connections from the given 'from' parameter NoTravelRouteFoundException`() {
+    fun `when there is no routes from the given 'from' parameter NoTravelRouteFoundException`() {
         val from = "BEL"
         val to = "GRU"
 
-        `when`(connectionService.findConnectionsFrom("BEL")).thenReturn(emptyList())
+        `when`(routeService.findRoutesFrom("BEL")).thenReturn(emptyList())
 
         assertThrows<NoTravelRouteFoundException> { travelService.findBestTravelRoute(from, to) }
     }
 
     @Test
-    fun `when there is no connections to from-to parameters should throw NoTravelRouteFoundException`() {}
+    fun `when there is no routes to from-to parameters should throw NoTravelRouteFoundException`() {}
 }
