@@ -1,7 +1,7 @@
 package br.com.bexs.service
 
 import br.com.bexs.domain.Route
-import br.com.bexs.exception.NoTravelRouteFoundException
+import br.com.bexs.exception.NoResourceFoundException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
@@ -16,13 +16,13 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @SpringBootTest
-internal class TravelServiceTest {
+internal class TravelRouteServiceTest {
 
     @Mock
     private lateinit var routeService: RouteService
 
     @InjectMocks
-    private lateinit var travelService: TravelService
+    private lateinit var travelRouteService: TravelRouteService
 
     @Test
     fun `when finding available travel route should return one with one route`() {
@@ -37,7 +37,7 @@ internal class TravelServiceTest {
         `when`(routeService.findRoutesFrom("BEL")).thenReturn(routesFromBEL)
         `when`(routeService.isEndRoute(route, to)).thenReturn(true)
 
-        val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
+        val travelRoutes = travelRouteService.findAvailableTravelRoutes(from, to)
 
         assertAll(
             { assertEquals("BEL", travelRoutes.first().routes.first().from) },
@@ -68,7 +68,7 @@ internal class TravelServiceTest {
         `when`(routeService.isEndRoute(routeBELtoPOA, to)).thenReturn(true)
         `when`(routeService.isEndRoute(routeBSBtoPOA, to)).thenReturn(true)
 
-        val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
+        val travelRoutes = travelRouteService.findAvailableTravelRoutes(from, to)
 
         assertEquals(2, travelRoutes.size)
     }
@@ -92,7 +92,7 @@ internal class TravelServiceTest {
         `when`(routeService.isEndRoute(routeBELtoPOA, to)).thenReturn(true)
         `when`(routeService.isEndRoute(routeBSBtoPOA, to)).thenReturn(true)
 
-        val bestTravelRoute = travelService.findBestTravelRoute(from, to)
+        val bestTravelRoute = travelRouteService.findBestTravelRoute(from, to)
 
         val travelCost =
             bestTravelRoute
@@ -133,7 +133,7 @@ internal class TravelServiceTest {
         `when`(routeService.findRoutesFrom("bel")).thenReturn(routesFromBEL)
         `when`(routeService.isEndRoute(route, to)).thenReturn(true)
 
-        val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
+        val travelRoutes = travelRouteService.findAvailableTravelRoutes(from, to)
 
         assertAll(
             { assertEquals("BEL", travelRoutes.first().routes.first().from) },
@@ -154,7 +154,7 @@ internal class TravelServiceTest {
         `when`(routeService.findRoutesFrom("BEL")).thenReturn(routesFromBEL)
         `when`(routeService.isEndRoute(route, to)).thenReturn(true)
 
-        val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
+        val travelRoutes = travelRouteService.findAvailableTravelRoutes(from, to)
 
         assertAll(
             { assertEquals("BEL", travelRoutes.first().routes.first().from) },
@@ -175,7 +175,7 @@ internal class TravelServiceTest {
         `when`(routeService.findRoutesFrom("bEL")).thenReturn(routesFromBEL)
         `when`(routeService.isEndRoute(route, to)).thenReturn(true)
 
-        val travelRoutes = travelService.findAvailableTravelRoutes(from, to)
+        val travelRoutes = travelRouteService.findAvailableTravelRoutes(from, to)
 
         assertAll(
             { assertEquals("BEL", travelRoutes.first().routes.first().from) },
@@ -196,7 +196,7 @@ internal class TravelServiceTest {
 
         `when`(routeService.isEndRoute(routeBELtoBSB, to)).thenReturn(false)
 
-        assertThrows<NoTravelRouteFoundException> { travelService.findBestTravelRoute(from, to) }
+        assertThrows<NoResourceFoundException> { travelRouteService.findBestTravelRoute(from, to) }
     }
 
     @Test
@@ -206,7 +206,7 @@ internal class TravelServiceTest {
 
         `when`(routeService.findRoutesFrom("BEL")).thenReturn(emptyList())
 
-        assertThrows<NoTravelRouteFoundException> { travelService.findBestTravelRoute(from, to) }
+        assertThrows<NoResourceFoundException> { travelRouteService.findBestTravelRoute(from, to) }
     }
 
     @Test

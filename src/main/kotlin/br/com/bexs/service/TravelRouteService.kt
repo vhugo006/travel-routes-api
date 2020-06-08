@@ -2,12 +2,12 @@ package br.com.bexs.service
 
 import br.com.bexs.domain.Route
 import br.com.bexs.domain.TravelRoute
-import br.com.bexs.exception.NoTravelRouteFoundException
+import br.com.bexs.exception.NoResourceFoundException
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
-class TravelService(private val routeService: RouteService) {
+class TravelRouteService(private val routeService: RouteService) {
 
     fun findBestTravelRoute(from: String, to: String): TravelRoute? {
 
@@ -55,7 +55,7 @@ class TravelService(private val routeService: RouteService) {
         return travelRoutesWithTotalCostsCalculated
             .stream()
             .min(Comparator.comparing(TravelRoute::totalCost))
-            .orElseThrow { NoTravelRouteFoundException("There is no travel route for the given parameters") }
+            .orElseThrow { NoResourceFoundException("There is no travel route for the given parameters") }
     }
 
     private fun calculateTravelRoutesTotalCost(travelRoutes: List<TravelRoute>): List<TravelRoute> {
@@ -71,6 +71,6 @@ class TravelService(private val routeService: RouteService) {
     }
 
     private fun validateAvailableTravelRoutes(availableTravelRoutes: List<TravelRoute>) {
-        if (availableTravelRoutes.isEmpty()) throw NoTravelRouteFoundException("There is no travel route for the given parameters")
+        if (availableTravelRoutes.isEmpty()) throw NoResourceFoundException("There is no travel route for the given parameters")
     }
 }

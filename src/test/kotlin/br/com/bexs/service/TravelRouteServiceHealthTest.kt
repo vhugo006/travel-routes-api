@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 
 
 @SpringBootTest
-internal class TravelServiceHealthTest{
+internal class TravelRouteServiceHealthTest{
 
     @Mock
     lateinit var serviceProperties: ServiceProperties

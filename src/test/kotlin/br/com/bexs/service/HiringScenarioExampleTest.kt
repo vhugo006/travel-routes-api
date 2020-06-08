@@ -18,7 +18,7 @@ internal class HiringScenarioExampleTest {
     private lateinit var routeService: RouteService
 
     @InjectMocks
-    private lateinit var travelService: TravelService
+    private lateinit var travelRouteService: TravelRouteService
 
     @Test
     fun `when finding the best available travel route from GRU to CDG should return the cheapest one`() {
@@ -37,7 +37,7 @@ internal class HiringScenarioExampleTest {
         val routeORLtoCDG = Route(100, "ORL", "CDG", BigDecimal(5.00))
         `when`(routeService.isEndRoute(routeORLtoCDG, to)).thenReturn(true)
 
-        val bestTravelRoute = travelService.findBestTravelRoute(from, to)
+        val bestTravelRoute = travelRouteService.findBestTravelRoute(from, to)
         val travelCost =
             bestTravelRoute
                 ?.routes
@@ -75,7 +75,7 @@ internal class HiringScenarioExampleTest {
 
         val routeORLtoCDG = Route(100, "ORL", "CDG", BigDecimal(5))
         `when`(routeService.isEndRoute(routeORLtoCDG, to)).thenReturn(true)
-        val bestTravelRoute = travelService.findBestTravelRoute(from, to)
+        val bestTravelRoute = travelRouteService.findBestTravelRoute(from, to)
 
         val travelCost =
             bestTravelRoute

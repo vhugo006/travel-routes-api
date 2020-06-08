@@ -2,8 +2,10 @@ package br.com.bexs.service
 
 import br.com.bexs.domain.Route
 import br.com.bexs.exception.AlreadyExistingRouteException
+import br.com.bexs.exception.NoResourceFoundException
 import br.com.bexs.repository.RouteRepository
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -11,6 +13,9 @@ import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.springframework.boot.test.context.SpringBootTest
 import java.math.BigDecimal
+import java.math.MathContext
+import java.math.RoundingMode
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -123,7 +128,7 @@ internal class RouteServiceTest {
         val route = Route(1005, from = "BEL", to = "POA", cost = BigDecimal(168.98))
         val to = "poa"
 
-        assertTrue{ routeService.isEndRoute(route, to)}
+        assertTrue { routeService.isEndRoute(route, to) }
     }
 
     @Test
@@ -132,7 +137,7 @@ internal class RouteServiceTest {
         val route = Route(1005, from = "BEL", to = "POA", cost = BigDecimal(168.98))
         val to = "POA"
 
-        assertTrue{ routeService.isEndRoute(route, to)}
+        assertTrue { routeService.isEndRoute(route, to) }
     }
 
     @Test
@@ -141,6 +146,36 @@ internal class RouteServiceTest {
         val route = Route(1005, from = "BEL", to = "POA", cost = BigDecimal(168.98))
         val to = "PoA"
 
-        assertTrue{ routeService.isEndRoute(route, to)}
+        assertTrue { routeService.isEndRoute(route, to) }
+    }
+
+    @Test
+    fun `when finding a route by an existing id should return the founded route`() {
+
+        val route = Route(1005, from = "BEL", to = "POA", cost = BigDecimal(168.98))
+
+        `when`(routeRepository.findById(1005)).thenReturn(Optional.of(route))
+
+        val returnedRoute = routeService.findRoute(1005)
+
+        assertAll(
+            { assertEquals(1005, returnedRoute.id) },
+            { assertEquals("BEL", returnedRoute.from) },
+            { assertEquals("POA", returnedRoute.to) },
+            {
+                assertEquals(
+                    BigDecimal(168.98).round(MathContext(5, RoundingMode.HALF_UP)),
+                    returnedRoute.cost.round(MathContext(5, RoundingMode.HALF_UP))
+                )
+            }
+        )
+    }
+
+    @Test
+    fun `when finding a route by a non existent id should throw NoResourceFoundException`() {
+
+        `when`(routeRepository.findById(1005)).thenReturn(Optional.empty())
+
+        assertThrows<NoResourceFoundException> { routeService.findRoute(1005) }
     }
 }

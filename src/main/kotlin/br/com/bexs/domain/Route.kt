@@ -10,7 +10,6 @@ import javax.persistence.Id
 @Entity
 data class Route(
     @Id @GeneratedValue
-    @JsonIgnore
     val id: Long? = null,
     @Column(name = "_from")
     val from: String,

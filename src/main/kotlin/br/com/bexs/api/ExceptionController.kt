@@ -1,7 +1,7 @@
 package br.com.bexs.api
 
 import br.com.bexs.exception.AlreadyExistingRouteException
-import br.com.bexs.exception.NoTravelRouteFoundException
+import br.com.bexs.exception.NoResourceFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -13,8 +13,8 @@ import java.util.*
 
 @ControllerAdvice
 class ExceptionController : ResponseEntityExceptionHandler() {
-    @ExceptionHandler(NoTravelRouteFoundException::class)
-    fun handleNoTravelRouteFoundException(ex: NoTravelRouteFoundException?): ResponseEntity<Any>? {
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun handleNoTravelRouteFoundException(ex: NoResourceFoundException?): ResponseEntity<Any>? {
 
         val body: MutableMap<String, Any> = LinkedHashMap()
 
