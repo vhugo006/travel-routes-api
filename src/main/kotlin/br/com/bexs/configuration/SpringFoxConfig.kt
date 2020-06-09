@@ -19,6 +19,7 @@ class SpringFoxConfig {
     @Bean
     fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
+            .useDefaultResponseMessages(false)
             .select()
             .apis(RequestHandlerSelectors.basePackage("br.com.bexs.api"))
             .paths(PathSelectors.any())

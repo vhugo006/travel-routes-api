@@ -10,12 +10,13 @@ import javax.persistence.Id
 @Entity
 data class Route(
     @Id @GeneratedValue
+    @JsonIgnore
     val id: Long? = null,
     @Column(name = "_from")
     val from: String,
     val to: String,
     @Column
-    val cost: BigDecimal
+    var cost: BigDecimal
 )
 
 data class TravelRoute(val routes: List<Route> = emptyList(), var totalCost: BigDecimal? = null)

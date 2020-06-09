@@ -27,7 +27,7 @@ Uma vez que a aplicação foi inicializada, você deverá ver um log parecido co
 
 O serviço é um simples serviço REST para dar suporte à aplicação Kotlin standalone que retorna os dados formatados 
 de rotas de viagens mais baratas independente do número de conexões. O serviço utiliza um banco de dados em memória (H2) 
-para armazenar os dados. Se der tudo certo com as configurações do banco de dados, você poderá chamar dois endpoints 
+para armazenar os dados. Se der tudo certo com as configurações do banco de dados, você poderá chamar os endpoints 
 definidos em ```br.com.bexs.api.RouteController``` **porta 8080**.
 
  
@@ -60,6 +60,46 @@ Content-Type: application/json
 
 RESPONSE: HTTP 201 (Created)
 Location header: http://localhost:8080/travel-routes/v1/routes/8
+```
+
+### Consultar a uma rota por ID
+
+```
+GET /travel-routes/v1/routes/1
+Accept: application/json
+Content-Type: application/json
+
+RESPONSE: HTTP 200 (OK)
+
+{
+  "from": "GRU",
+  "to": "SCL",
+  "cost": 20
+}
+```
+
+### Atualizar o custo de uma rota
+
+```
+PUT /travel-routes/v1/routes/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "cost": 20.00
+}
+
+RESPONSE: HTTP 200 (OK)
+```
+
+### Excluir rota
+
+```
+DELETE /travel-routes/v1/routes/1
+Accept: application/json
+Content-Type: application/json
+
+RESPONSE: HTTP 200 (OK)
 ```
 
 ### Consultar a melhor rota de viagem

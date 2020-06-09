@@ -3,7 +3,6 @@ package br.com.bexs.service
 import br.com.bexs.domain.Route
 import br.com.bexs.domain.TravelRoute
 import br.com.bexs.exception.NoResourceFoundException
-import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 

@@ -4,10 +4,9 @@ import br.com.bexs.domain.Route
 import br.com.bexs.exception.AlreadyExistingRouteException
 import br.com.bexs.exception.NoResourceFoundException
 import br.com.bexs.repository.RouteRepository
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 @Service
 class RouteService(private val routeRepository: RouteRepository) {
@@ -21,6 +20,16 @@ class RouteService(private val routeRepository: RouteRepository) {
     fun findRoute(id: Long): Route {
         return routeRepository.findById(id)
             .orElseThrow { NoResourceFoundException("There is no route for the id $id.") }
+    }
+
+    fun updateCost(id: Long, cost: BigDecimal): Route {
+        val resourceToUpdate = findRoute(id)
+        resourceToUpdate.cost = cost
+        return routeRepository.save(resourceToUpdate)
+    }
+
+    fun deleteById(id: Long) {
+        routeRepository.delete(findRoute(id))
     }
 
     fun findRoutesFrom(from: String): List<Route> {

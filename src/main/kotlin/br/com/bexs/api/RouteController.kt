@@ -2,6 +2,7 @@ package br.com.bexs.api
 
 import br.com.bexs.domain.Route
 import br.com.bexs.domain.TravelRoute
+import br.com.bexs.domain.dto.CostUpdateDTO
 import br.com.bexs.service.RouteService
 import br.com.bexs.service.TravelRouteService
 import io.swagger.annotations.Api
@@ -84,5 +85,32 @@ class RouteController(
         response: HttpServletResponse
     ): List<Route> {
         return this.routeService.getAllRoutes(page, size)
+    }
+
+    @PutMapping(value = ["/{id}"])
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+        value = "Update the cost of the given route ID.",
+        notes = "You have to provide a valid route ID."
+    )
+    fun update(
+        @ApiParam(value = "The ID of the route.", required = true)
+        @PathVariable("id") id: Long,
+        @RequestBody costUpdateDTO: CostUpdateDTO
+    ) {
+        routeService.updateCost(id, costUpdateDTO.cost)
+    }
+
+    @DeleteMapping(value = ["/{id}"])
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+        value = "Delete the route resource for the given route ID.",
+        notes = "You have to provide a valid route ID."
+    )
+    fun delete(
+        @ApiParam(value = "The ID of the route.", required = true)
+        @PathVariable("id") id: Long
+    ) {
+        routeService.deleteById(id)
     }
 }
