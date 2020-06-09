@@ -16,7 +16,7 @@ class ExceptionController : ResponseEntityExceptionHandler() {
     @ExceptionHandler(NoResourceFoundException::class)
     fun handleNoTravelRouteFoundException(ex: NoResourceFoundException?): ResponseEntity<Any>? {
 
-        val body: MutableMap<String, Any> = LinkedHashMap()
+        val body = LinkedHashMap<String, Any>()
 
         body["timestamp"] = LocalDateTime.now()
         body["message"] = ex?.message!!
@@ -27,7 +27,7 @@ class ExceptionController : ResponseEntityExceptionHandler() {
     @ExceptionHandler(AlreadyExistingRouteException::class)
     fun handleAlreadyExistingRouteException(ex: AlreadyExistingRouteException?): ResponseEntity<Any>? {
 
-        val body: MutableMap<String, Any> = LinkedHashMap()
+        val body = LinkedHashMap<String, Any>()
 
         body["timestamp"] = LocalDateTime.now()
         body["message"] = ex?.message!!

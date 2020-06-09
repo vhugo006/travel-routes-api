@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
@@ -24,11 +23,10 @@ class RouteController(
     private val travelRouteRouteService: TravelRouteService
 ) {
 
-    private val logger: Logger = LoggerFactory.getLogger(RouteController::class.java)
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     private val defaultPageSize = "100"
     private val defaultPageNum = "0"
-
 
     @PostMapping(value = [""], produces = ["application/json"])
     @ResponseStatus(HttpStatus.CREATED)
@@ -71,7 +69,7 @@ class RouteController(
         return travelRouteRouteService.findBestTravelRoute(from, to)
     }
 
-    @RequestMapping(value = [""], method = [RequestMethod.GET], produces = ["application/json"])
+    @GetMapping(value = [""], params = ["page", "size"], produces = ["application/json"])
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(
         value = "Get a paginated list of all routes.",
@@ -83,9 +81,8 @@ class RouteController(
         @RequestParam(value = "page", required = true, defaultValue = "0") page: Int,
         @ApiParam(value = "Tha page size", required = true)
         @RequestParam(value = "size", required = true, defaultValue = "100") size: Int,
-        request: HttpServletRequest,
         response: HttpServletResponse
-    ): Page<Route> {
+    ): List<Route> {
         return this.routeService.getAllRoutes(page, size)
     }
 }

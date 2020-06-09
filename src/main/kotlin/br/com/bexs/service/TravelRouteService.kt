@@ -3,11 +3,14 @@ package br.com.bexs.service
 import br.com.bexs.domain.Route
 import br.com.bexs.domain.TravelRoute
 import br.com.bexs.exception.NoResourceFoundException
+import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
-class TravelRouteService(private val routeService: RouteService) {
+class TravelRouteService(
+    private val routeService: RouteService
+) {
 
     fun findBestTravelRoute(from: String, to: String): TravelRoute? {
 
