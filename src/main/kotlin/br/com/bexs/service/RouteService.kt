@@ -4,6 +4,7 @@ import br.com.bexs.domain.Route
 import br.com.bexs.exception.AlreadyExistingRouteException
 import br.com.bexs.exception.NoResourceFoundException
 import br.com.bexs.repository.RouteRepository
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -58,9 +59,8 @@ class RouteService(private val routeRepository: RouteRepository) {
         )
     }
 
-    fun getAllRoutes(page: Int, size: Int): List<Route> {
+    fun getAllRoutesPaginated(page: Int, size: Int): Page<Route> {
 
-        val routes = routeRepository.findAll(PageRequest.of(page, size))
-        return routes.content
+        return routeRepository.findAll(PageRequest.of(page, size))
     }
 }

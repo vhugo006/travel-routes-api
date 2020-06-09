@@ -5,6 +5,7 @@ import br.com.bexs.domain.TravelRoute
 import br.com.bexs.domain.dto.CostUpdateDTO
 import br.com.bexs.service.RouteService
 import br.com.bexs.service.TravelRouteService
+import br.com.bexs.util.ResponseUtil
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
@@ -12,6 +13,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.util.UriComponentsBuilder
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -21,7 +23,8 @@ import javax.servlet.http.HttpServletResponse
 @Api(tags = ["travel-routes"])
 class RouteController(
     private val routeService: RouteService,
-    private val travelRouteRouteService: TravelRouteService
+    private val travelRouteRouteService: TravelRouteService,
+    private val responseUtil: ResponseUtil
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -77,14 +80,24 @@ class RouteController(
         notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)"
     )
     @ResponseBody
-    fun getAllRoutes(
+    fun getAllRoutesPaginated(
         @ApiParam(value = "The page number (zero-based)", required = true)
         @RequestParam(value = "page", required = true, defaultValue = "0") page: Int,
         @ApiParam(value = "Tha page size", required = true)
         @RequestParam(value = "size", required = true, defaultValue = "100") size: Int,
+        uriComponentsBuilder: UriComponentsBuilder,
         response: HttpServletResponse
     ): List<Route> {
-        return this.routeService.getAllRoutes(page, size)
+        val resultPage = routeService.getAllRoutesPaginated(page, size)
+        responseUtil.addLinkHeaderOnPagedResourceRetrieval(
+            uriComponentsBuilder,
+            response,
+            Route::class.java,
+            page,
+            resultPage.totalPages,
+            size
+        )
+        return resultPage.content
     }
 
     @PutMapping(value = ["/{id}"])

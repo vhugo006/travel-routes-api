@@ -69,7 +69,11 @@ GET /travel-routes/v1/routes/1
 Accept: application/json
 Content-Type: application/json
 
-RESPONSE: HTTP 200 (OK)
+RESPONSE: 
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Tue, 09 Jun 2020 13:58:57 GMT
 
 {
   "from": "GRU",
@@ -110,6 +114,41 @@ Accept: application/json
 Content-Type: application/json
 
 RESPONSE: HTTP 200 (OK)
+
+{
+  "routes": [
+    {
+      "from": "GRU",
+      "to": "SCL",
+      "cost": 20
+    },
+    {
+      "from": "SCL",
+      "to": "ORL",
+      "cost": 20
+    },
+    {
+      "from": "ORL",
+      "to": "CDG",
+      "cost": 5
+    }
+  ],
+  "totalCost": 45
+}
+```
+
+### Consultar a melhor rota de viagem
+```
+GET /travel-routes/v1/routes?page=1&size=2
+Accept: application/json
+Content-Type: application/json
+
+RESPONSE: 
+HTTP/1.1 200 
+Link: <http://localhost:8080?page=2&size=2>; rel="next", <http://localhost:8080?page=0&size=2>; rel="prev", <http://localhost:8080?page=0&size=2>; rel="first", <http://localhost:8080?page=4&size=2>; rel="last"
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Tue, 09 Jun 2020 13:27:07 GMT
 
 {
   "routes": [
