@@ -25,7 +25,7 @@ internal class TravelRouteServiceTest {
     private lateinit var travelRouteService: TravelRouteService
 
     @Test
-    fun `when finding available travel route should return one with one route`() {
+    fun `given valid parameters when finding available travel route then return one travel route`() {
 
         val from = "BEL"
         val to = "POA"
@@ -47,7 +47,7 @@ internal class TravelRouteServiceTest {
     }
 
     @Test
-    fun `when finding available travel routes from BEL to POA should return two travel routes`() {
+    fun `given BEL to POA parameters when finding available travel routes then return two travel routes`() {
 
         val from = "BEL"
         val to = "POA"
@@ -74,7 +74,8 @@ internal class TravelRouteServiceTest {
     }
 
     @Test
-    fun `when finding the best available travel route should return the cheapest one`() {
+    fun `given valid parameters when finding the best available travel route then return the cheapest one`() {
+
         val from = "BEL"
         val to = "POA"
 
@@ -117,12 +118,8 @@ internal class TravelRouteServiceTest {
     }
 
     @Test
-    fun `when there is no travel route available should throw a NoTravelRouteFoundException`(){
+    fun `given lowercase from-to parameters when finding the best available travel route then return a travel route`(){
 
-    }
-
-    @Test
-    fun `when from-to parameters is lowercase should return the existing travel route`(){
         val from = "bel"
         val to = "poa"
 
@@ -143,7 +140,8 @@ internal class TravelRouteServiceTest {
     }
 
     @Test
-    fun `when from-to parameters is uppercase should return the existing travel route`(){
+    fun `given uppercase from-to parameters when finding the best available travel route then return a travel route`(){
+
         val from = "BEL"
         val to = "POA"
 
@@ -164,7 +162,8 @@ internal class TravelRouteServiceTest {
     }
 
     @Test
-    fun `when from-to parameters is lowercase and uppercase mixed should return return the existing travel route`(){
+    fun `given mixed lowercase and uppercase from-to parameters when finding the best available travel route then return a travel route`(){
+
         val from = "bEL"
         val to = "pOa"
 
@@ -185,7 +184,7 @@ internal class TravelRouteServiceTest {
     }
 
     @Test
-    fun `when available travel route is not found should throw NoTravelRouteFoundException`() {
+    fun `given there is no routes for parameters when finding the best available travel route then throw NoTravelRouteFoundException`() {
         val from = "BEL"
         val to = "GRU"
 
@@ -200,7 +199,7 @@ internal class TravelRouteServiceTest {
     }
 
     @Test
-    fun `when there is no routes from the given 'from' parameter NoTravelRouteFoundException`() {
+    fun `given there is no routes coming from parameters when finding the best available travel route then throw NoTravelRouteFoundException`() {
         val from = "BEL"
         val to = "GRU"
 
@@ -208,7 +207,4 @@ internal class TravelRouteServiceTest {
 
         assertThrows<NoResourceFoundException> { travelRouteService.findBestTravelRoute(from, to) }
     }
-
-    @Test
-    fun `when there is no routes to from-to parameters should throw NoTravelRouteFoundException`() {}
 }

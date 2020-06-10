@@ -30,7 +30,7 @@ internal class RouteServiceTest {
     private lateinit var routeService: RouteService
 
     @Test
-    fun `when adding a route should return a non nullable route`() {
+    fun `given a valid route parameter when adding a new route then return a non nullable route`() {
 
         val route = Route(from = "BEL", to = "GRU", cost = BigDecimal(750.00))
         `when`(routeRepository.save(route))
@@ -40,7 +40,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when adding a route with lower case 'from' parameter should return a route`() {
+    fun `given lower case 'from' parameter when adding a route then return a route`() {
 
         val formattedRoute = Route(from = "BEL", to = "GRU", cost = BigDecimal(750.00))
         `when`(routeRepository.save(formattedRoute))
@@ -51,7 +51,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when adding a route with lower case 'to' parameter should return a route`() {
+    fun `given lower case 'to' parameter when adding a route then return a route`() {
 
         val formattedRoute = Route(from = "BEL", to = "GRU", cost = BigDecimal(750.00))
         `when`(routeRepository.save(formattedRoute))
@@ -62,7 +62,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when adding a route with lower case 'from-to' parameters should return a route`() {
+    fun `given lower case 'from-to' parameters when adding a route then return a route`() {
 
         val formattedRoute = Route(from = "BEL", to = "GRU", cost = BigDecimal(750.00))
         `when`(routeRepository.save(formattedRoute))
@@ -73,7 +73,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when adding a route mixed lower-upper case 'from-to' parameters should return a route`() {
+    fun `given mixed lower-upper case 'from-to' parameters when adding a route then return a route`() {
 
         val formattedRoute = Route(from = "BEL", to = "GRU", cost = BigDecimal(750.00))
         `when`(routeRepository.save(formattedRoute))
@@ -84,7 +84,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when there is routes for the given origin parameter should return a non empty collection`() {
+    fun `given a valid from parameter when finding routes then a non empty collection`() {
 
         val routesWithOriginInBEL = mutableListOf(
             Route(1105, "BEL", "POA", BigDecimal(168.98)),
@@ -98,7 +98,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when finding routes by origin should return the same origin in collection items`() {
+    fun `given a valid from parameter when finding routes then return the same parameter in collection items`() {
 
         val routesWithOriginInBEL = mutableListOf(
             Route(1105, "BEL", "POA", BigDecimal(168.98)),
@@ -111,7 +111,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when adding a route and it already exists should throws AlreadyExistingRouteException`() {
+    fun `given an existent route when adding a new route then throws AlreadyExistingRouteException`() {
 
         val route = Route(1005, from = "BEL", to = "POA", cost = BigDecimal(168.98))
 
@@ -123,7 +123,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when 'to' parameter is lowercase should return true`() {
+    fun `given lowercase 'to' parameter when validating end route then return true`() {
 
         val route = Route(1005, from = "BEL", to = "POA", cost = BigDecimal(168.98))
         val to = "poa"
@@ -132,7 +132,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when 'to' parameter is uppercase should return true`() {
+    fun `given uppercase 'to' parameter when validating end route then return true`() {
 
         val route = Route(1005, from = "BEL", to = "POA", cost = BigDecimal(168.98))
         val to = "POA"
@@ -141,7 +141,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when 'to' parameter is uppercase and lowercase mixed should return true`() {
+    fun `given mixed uppercase and lowercase 'to' parameter when validating end route then return true`() {
 
         val route = Route(1005, from = "BEL", to = "POA", cost = BigDecimal(168.98))
         val to = "PoA"
@@ -150,7 +150,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when finding a route by an existing id should return the founded route`() {
+    fun `given an existent id when finding a route then return a route`() {
 
         val route = Route(1005, from = "BEL", to = "POA", cost = BigDecimal(168.98))
 
@@ -172,7 +172,7 @@ internal class RouteServiceTest {
     }
 
     @Test
-    fun `when finding a route by a non existent id should throw NoResourceFoundException`() {
+    fun `given a non existent id when finding a route then throw NoResourceFoundException`() {
 
         `when`(routeRepository.findById(1005)).thenReturn(Optional.empty())
 

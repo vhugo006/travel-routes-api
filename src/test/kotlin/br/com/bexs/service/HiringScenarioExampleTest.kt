@@ -21,7 +21,7 @@ internal class HiringScenarioExampleTest {
     private lateinit var travelRouteService: TravelRouteService
 
     @Test
-    fun `when finding the best available travel route from GRU to CDG should return the cheapest one`() {
+    fun `given GRU to CDG parameters when finding the best available travel route then return the cheapest one`() {
 
         val from = "GRU"
         val to = "CDG"
@@ -60,7 +60,7 @@ internal class HiringScenarioExampleTest {
     }
 
     @Test
-    fun `when finding the best available travel route from BRC to CDG should return the cheapest one`() {
+    fun `given BRC to CDG parameters when finding the best available travel route then return the cheapest one`() {
 
         val from = "BRC"
         val to = "CDG"

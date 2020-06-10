@@ -3,6 +3,7 @@ package br.com.bexs.api
 import br.com.bexs.domain.Route
 import br.com.bexs.domain.TravelRoute
 import br.com.bexs.domain.dto.CostUpdateDTO
+import br.com.bexs.exception.NoResourceFoundException
 import br.com.bexs.service.RouteService
 import br.com.bexs.service.TravelRouteService
 import br.com.bexs.util.ResponseUtil
@@ -28,9 +29,6 @@ class RouteController(
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
-
-    private val defaultPageSize = "100"
-    private val defaultPageNum = "0"
 
     @PostMapping(value = [""], produces = ["application/json"])
     @ResponseStatus(HttpStatus.CREATED)

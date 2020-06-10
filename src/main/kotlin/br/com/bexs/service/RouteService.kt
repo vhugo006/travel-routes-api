@@ -12,12 +12,14 @@ import java.math.BigDecimal
 @Service
 class RouteService(private val routeRepository: RouteRepository) {
 
+    @Throws(AlreadyExistingRouteException::class)
     fun addRoute(route: Route): Route {
         validateRoute(route.from, route.to)
         val formattedRoute = formatRouteParameters(route)
         return routeRepository.save(formattedRoute)
     }
 
+    @Throws(NoResourceFoundException::class)
     fun findRoute(id: Long): Route {
         return routeRepository.findById(id)
             .orElseThrow { NoResourceFoundException("There is no route for the id $id.") }
