@@ -45,7 +45,7 @@ partir de uma simples configuração o acesso aos dados.
 
 Abaixo estão os endpoints que você pode chamar:
 
-### Criar uma conexão
+### Criar uma rota
 
 ```
 POST /travel-routes/v1/routes
@@ -137,7 +137,7 @@ RESPONSE: HTTP 200 (OK)
 }
 ```
 
-### Consultar a melhor rota de viagem
+### Consultar lista paginada de rotas
 ```
 GET /travel-routes/v1/routes?page=1&size=2
 Accept: application/json
@@ -145,7 +145,7 @@ Content-Type: application/json
 
 RESPONSE: 
 HTTP/1.1 200 
-Link: <http://localhost:8080?page=2&size=2>; rel="next", <http://localhost:8080?page=0&size=2>; rel="prev", <http://localhost:8080?page=0&size=2>; rel="first", <http://localhost:8080?page=4&size=2>; rel="last"
+Link: <http://localhost:8080?page=2&size=2>; rel="next", <http://localhost:8080?page=0&size=2>; rel="prev", <http://localhost:8080?page=0&size=2>; rel="first", <http://localhost:8080?page=3&size=2>; rel="last"
 Content-Type: application/json
 Transfer-Encoding: chunked
 Date: Tue, 09 Jun 2020 13:27:07 GMT
