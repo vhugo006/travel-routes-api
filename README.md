@@ -174,6 +174,19 @@ Date: Tue, 09 Jun 2020 13:27:07 GMT
 
 Execute a aplicação e acesse ```localhost:8090/swagger-ui.html```
 
+## Console H2
+Para consultar os registros inseridos no banco de dados, execute a aplicação e acesse ```http://localhost:8090/h2```
+
+Parâmetros:
+
+```
+Driver Class: org.h2.Driver
+JDBC URL: jdbc:h2:mem:test
+User Name: sa
+Password:
+```
+Obs. A senha deve permanecer vazia. Não é necessário digitar nada.
+
 # Add route curl examples
 ```   
 curl -X POST -i -d '{ "from": "GRU", "to": "BRC", "cost": 10}' -H 'Content-Type: application/json' http://localhost:8090/travel-routes/v1/routes
