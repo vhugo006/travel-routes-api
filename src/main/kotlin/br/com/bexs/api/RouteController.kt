@@ -51,7 +51,7 @@ class RouteController(
         notes = "You have to provide a valid route ID."
     )
     fun findRoute(
-        @ApiParam(value = "The ID of the route.", required = true)
+        @ApiParam(value = "The ID of the route.", required = true, example = "7654")
         @PathVariable id: Long
     ): Route {
         return routeService.findRoute(id)
@@ -79,9 +79,9 @@ class RouteController(
     )
     @ResponseBody
     fun getAllRoutesPaginated(
-        @ApiParam(value = "The page number (zero-based)", required = true)
+        @ApiParam(value = "The page number (zero-based)", required = true, example = "0")
         @RequestParam(value = "page", required = true, defaultValue = "0") page: Int,
-        @ApiParam(value = "Tha page size", required = true)
+        @ApiParam(value = "Tha page size", required = true, example = "100")
         @RequestParam(value = "size", required = true, defaultValue = "100") size: Int,
         uriComponentsBuilder: UriComponentsBuilder,
         response: HttpServletResponse
@@ -105,7 +105,7 @@ class RouteController(
         notes = "You have to provide a valid route ID."
     )
     fun update(
-        @ApiParam(value = "The ID of the route.", required = true)
+        @ApiParam(value = "The ID of the route.", required = true, example = "1001")
         @PathVariable("id") id: Long,
         @RequestBody costUpdateDTO: CostUpdateDTO
     ) {
@@ -119,7 +119,7 @@ class RouteController(
         notes = "You have to provide a valid route ID."
     )
     fun delete(
-        @ApiParam(value = "The ID of the route.", required = true)
+        @ApiParam(value = "The ID of the route.", required = true, example = "1001")
         @PathVariable("id") id: Long
     ) {
         routeService.deleteById(id)
