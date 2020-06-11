@@ -9,7 +9,7 @@ A aplicação está empacotada em um arquivo .war e tem o Tomcat 8 embarcado. N�
  
 * Para executar a aplicação é necessário ter o JDK 1.8 e Maven 3.x
 * Você pode empacotar a aplicação executando o comando ```mvn clean package``` na raiz do projeto
-* Ao finalizar o empacotamento com sucesso, você pode executar o serviço executando um dos comandos abaixo:
+* Ao finalizar o empacotamento com sucesso, você pode executar o serviço executando o comando abaixo:
 ```
         java -jar -Dspring.profiles.active=test target/travel-routes-api-1.0-SNAPSHOT.war
 ```
